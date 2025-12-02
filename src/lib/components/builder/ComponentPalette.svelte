@@ -56,12 +56,23 @@
   };
 
   let activeCategory = $state<keyof typeof categories | 'all'>('all');
+  let searchQuery = $state('');
 
-  const filteredComponents = $derived(
-    activeCategory === 'all'
+  const filteredComponents = $derived(() => {
+    let filtered = activeCategory === 'all'
       ? components
-      : components.filter((c) => c.category === activeCategory)
-  );
+      : components.filter((c) => c.category === activeCategory);
+
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter((c) =>
+        c.label.toLowerCase().includes(query) ||
+        c.type.toLowerCase().includes(query)
+      );
+    }
+
+    return filtered;
+  });
 
   function addComponent(type: ComponentType) {
     historyStore.saveState();
@@ -79,6 +90,14 @@
 <div class="component-palette panel h-full flex flex-col">
   <div class="p-4 border-b border-gray-200">
     <h2 class="text-lg font-semibold text-gray-900 mb-3">Components</h2>
+
+    <!-- Search input -->
+    <input
+      type="search"
+      class="w-full px-3 py-2 mb-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+      placeholder="Search components..."
+      bind:value={searchQuery}
+    />
 
     <!-- Category filters -->
     <div class="flex gap-2 flex-wrap">
@@ -105,8 +124,14 @@
 
   <!-- Component grid -->
   <div class="flex-1 overflow-y-auto p-4">
-    <div class="grid grid-cols-2 gap-3">
-      {#each filteredComponents as component}
+    {#if filteredComponents.length === 0}
+      <div class="flex flex-col items-center justify-center h-full text-center text-gray-400">
+        <p class="text-sm">No components found</p>
+        <p class="text-xs mt-1">Try a different search term</p>
+      </div>
+    {:else}
+      <div class="grid grid-cols-2 gap-3">
+        {#each filteredComponents as component}
         <button
           class="component-item flex flex-col items-center gap-2 p-4 rounded-lg border-2 border-gray-200 hover:border-primary-500 hover:bg-primary-50 transition-all cursor-move"
           draggable="true"
@@ -116,8 +141,9 @@
           <svelte:component this={component.icon} class="w-6 h-6 text-gray-700" />
           <span class="text-sm font-medium text-gray-900">{component.label}</span>
         </button>
-      {/each}
-    </div>
+        {/each}
+      </div>
+    {/if}
   </div>
 
   <div class="p-4 border-t border-gray-200 bg-gray-50">

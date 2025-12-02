@@ -2,7 +2,8 @@
   import { canvasStore } from '$lib/stores/canvas.svelte';
   import { historyStore } from '$lib/stores/history.svelte';
   import type { Component } from '$lib/types';
-  import { Layers, Eye, EyeOff, Lock, Unlock, ChevronRight, ChevronDown } from 'lucide-svelte';
+  import { Layers, Eye, EyeOff, Lock, Unlock, ChevronRight, ChevronDown, Copy } from 'lucide-svelte';
+  import { toast } from 'svelte-sonner';
 
   let expandedIds = $state<Set<string>>(new Set());
 
@@ -29,6 +30,15 @@
     event.stopPropagation();
     historyStore.saveState();
     canvasStore.toggleLock(id);
+  }
+
+  function duplicateComponent(id: string, event: MouseEvent) {
+    event.stopPropagation();
+    historyStore.saveState();
+    const duplicate = canvasStore.duplicateComponent(id);
+    if (duplicate) {
+      toast.success('Component duplicated');
+    }
   }
 
   function renderLayerTree(components: Component[], depth = 0): any {
@@ -124,6 +134,15 @@
             <div class="flex items-center gap-1 flex-shrink-0">
               <button
                 class="p-1 hover:bg-gray-200 rounded transition-colors"
+                onclick={(e) => duplicateComponent(component.id, e)}
+                title="Duplicate"
+                aria-label="Duplicate"
+              >
+                <Copy class="w-4 h-4 text-gray-600" />
+              </button>
+
+              <button
+                class="p-1 hover:bg-gray-200 rounded transition-colors"
                 onclick={(e) => {
                   e.stopPropagation();
                   toggleVisibility(component.id, e);
@@ -162,7 +181,7 @@
 
   <div class="p-4 border-t border-gray-200 bg-gray-50">
     <p class="text-xs text-gray-600">
-      <strong>Tip:</strong> Click to select, use eye/lock icons to toggle visibility and locking
+      <strong>Tip:</strong> Click to select, use copy icon to duplicate, eye/lock to toggle visibility and locking
     </p>
   </div>
 </div>

@@ -3,6 +3,7 @@
   import { generateHTML, downloadFile } from '$lib/utils/export';
   import Modal from '$lib/components/ui/Modal.svelte';
   import { Download, Copy, Check } from 'lucide-svelte';
+  import { toast } from 'svelte-sonner';
 
   interface Props {
     open?: boolean;
@@ -22,9 +23,20 @@
     try {
       await navigator.clipboard.writeText(htmlCode);
       copied = true;
+      toast.success('Code copied to clipboard!');
       setTimeout(() => (copied = false), 2000);
     } catch (err) {
       console.error('Failed to copy:', err);
+      toast.error('Failed to copy code');
+    }
+  }
+
+  function handleDownloadWithToast() {
+    try {
+      handleDownload();
+      toast.success('HTML file downloaded!');
+    } catch (err) {
+      toast.error('Failed to download file');
     }
   }
 </script>
@@ -46,7 +58,7 @@
               Copy
             {/if}
           </button>
-          <button class="btn btn-primary flex items-center gap-2" onclick={handleDownload}>
+          <button class="btn btn-primary flex items-center gap-2" onclick={handleDownloadWithToast}>
             <Download class="w-4 h-4" />
             Download
           </button>

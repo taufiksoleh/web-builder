@@ -1,6 +1,7 @@
 <script lang="ts">
   import { canvasStore } from '$lib/stores/canvas.svelte';
   import { historyStore } from '$lib/stores/history.svelte';
+  import { toast } from 'svelte-sonner';
   import {
     Undo,
     Redo,
@@ -10,15 +11,17 @@
     Code,
     Trash2,
     Play,
+    HelpCircle,
   } from 'lucide-svelte';
 
   interface Props {
     onExport?: () => void;
     onSave?: () => void;
     onPreview?: () => void;
+    onShowShortcuts?: () => void;
   }
 
-  let { onExport, onSave, onPreview }: Props = $props();
+  let { onExport, onSave, onPreview, onShowShortcuts }: Props = $props();
 
   function handleUndo() {
     historyStore.undo();
@@ -32,6 +35,17 @@
     if (confirm('Are you sure you want to clear the canvas? This cannot be undone.')) {
       historyStore.saveState();
       canvasStore.clear();
+      toast.info('Canvas cleared');
+    }
+  }
+
+  function handleDuplicate() {
+    if (canvasStore.selectedId) {
+      historyStore.saveState();
+      const duplicate = canvasStore.duplicateComponent(canvasStore.selectedId);
+      if (duplicate) {
+        toast.success('Component duplicated');
+      }
     }
   }
 
@@ -53,6 +67,9 @@
       } else if (event.key === 's') {
         event.preventDefault();
         onSave?.();
+      } else if (event.key === 'd') {
+        event.preventDefault();
+        handleDuplicate();
       }
     } else if (event.key === 'Delete' || event.key === 'Backspace') {
       if (canvasStore.selectedId) {
@@ -62,6 +79,7 @@
           event.preventDefault();
           historyStore.saveState();
           canvasStore.removeComponent(canvasStore.selectedId);
+          toast.info('Component deleted');
         }
       }
     }
@@ -114,6 +132,14 @@
   </div>
 
   <div class="flex items-center gap-2">
+    <button
+      class="toolbar-btn hover:bg-gray-100"
+      onclick={onShowShortcuts}
+      title="Keyboard Shortcuts (?)"
+    >
+      <HelpCircle class="w-5 h-5" />
+    </button>
+
     <button
       class="toolbar-btn hover:bg-gray-100"
       onclick={onPreview}

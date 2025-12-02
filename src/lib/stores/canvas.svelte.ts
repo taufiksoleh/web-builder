@@ -109,6 +109,49 @@ class CanvasStore {
     }
   }
 
+  // Duplicate component (with children)
+  duplicateComponent(id: string) {
+    const component = this.findComponent(id);
+    if (!component) return null;
+
+    // Deep clone the component
+    const duplicate = this.deepCloneComponent(component);
+
+    // Find parent and add duplicate after original
+    if (component.parent) {
+      const parent = this.findComponent(component.parent);
+      if (parent) {
+        const index = parent.children.findIndex(c => c.id === id);
+        parent.children.splice(index + 1, 0, duplicate);
+      }
+    } else {
+      const index = this.components.findIndex(c => c.id === id);
+      this.components.splice(index + 1, 0, duplicate);
+    }
+
+    this.selectedId = duplicate.id;
+    return duplicate;
+  }
+
+  // Deep clone component with new IDs
+  private deepCloneComponent(component: Component): Component {
+    const cloned: Component = {
+      ...component,
+      id: nanoid(),
+      name: `${component.type}-${Date.now()}`,
+      children: component.children.map(child => this.deepCloneComponent(child)),
+      styles: { ...component.styles },
+      props: { ...component.props },
+    };
+
+    // Update parent reference in children
+    cloned.children.forEach(child => {
+      child.parent = cloned.id;
+    });
+
+    return cloned;
+  }
+
   // Set breakpoint
   setBreakpoint(breakpoint: Breakpoint) {
     this.breakpoint = breakpoint;

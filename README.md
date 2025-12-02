@@ -1,176 +1,200 @@
-# Web Builder - Flutter Web Application
+# Svelte Web Builder
 
-A modern, high-performance drag-and-drop web builder with AI assistance, built with Flutter Web.
+A modern, feature-rich drag-and-drop web page builder built with Svelte 5 and SvelteKit. Create beautiful, responsive web pages visually without writing code.
 
-## 🚀 Features
+![Svelte 5](https://img.shields.io/badge/Svelte-5-FF3E00?style=flat&logo=svelte)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat&logo=typescript)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-3-38B2AC?style=flat&logo=tailwind-css)
 
-- ✨ **Drag-and-Drop Interface** - Intuitive visual builder
-- 🤖 **AI Chat Assistant** - Claude API integration for natural language commands
-- 🎨 **Material Design 3** - Beautiful, modern UI
-- 📱 **Responsive Design** - Works on all screen sizes
-- ⚡ **WebAssembly Support** - Optimized performance
-- 🔧 **Component Library** - Pre-built, customizable components
-- 💾 **Auto-Save** - Never lose your work
-- 🎯 **Export Options** - Flutter, HTML/CSS/JS, React
+## ✨ Features
 
-## 🛠️ Tech Stack
+### Core Features
+- 🎨 **Drag-and-Drop Interface** - Intuitive visual page builder
+- 📱 **Responsive Design** - Preview in desktop, tablet, and mobile views
+- 🔄 **Undo/Redo** - Full history management with keyboard shortcuts (Ctrl+Z/Ctrl+Y)
+- 💾 **Auto-Save** - Automatic project saving every 30 seconds
+- 🎯 **Export** - Generate clean HTML/CSS code
+- 👁️ **Live Preview** - See your page in a real browser environment
+- ⌨️ **Keyboard Shortcuts** - Efficient workflow with keyboard support
 
-- **Framework**: Flutter 3.x with Web support
-- **Language**: Dart 3.x
-- **State Management**: Provider
-- **UI**: Material Design 3
-- **AI**: Claude API (Anthropic)
-- **Backend**: Supabase (planned)
+### Rich Component Library
+- **Layout**: Container, Row, Column
+- **Content**: Text, Heading, Button, Image
+- **Forms**: Input, Textarea
+- **Sections**: Card, Navbar, Hero, Footer
 
-## 📋 Prerequisites
+### Advanced Capabilities
+- 🎨 **Visual Property Editor** - Edit styles, content, and layout properties
+- 📊 **Layer Management** - Organize components with tree view
+- 🔒 **Lock/Hide Components** - Control visibility and editing
+- 🎯 **Component Selection** - Visual selection with keyboard support
+- 💡 **Smart Defaults** - Pre-configured styles for all components
+- 🔧 **Flexbox Support** - Full control over layout properties
 
-- Flutter SDK 3.2.0 or higher
-- Dart SDK 3.2.0 or higher
-- Chrome (for development)
+## 🚀 Getting Started
 
-## 🏃 Getting Started
+### Prerequisites
+- Node.js 18+
+- npm or pnpm
 
-### 1. Install Dependencies
-
-```bash
-flutter pub get
-```
-
-### 2. Enable Web Support (if not already enabled)
-
-```bash
-flutter config --enable-web
-```
-
-### 3. Run Development Server
+### Installation
 
 ```bash
-flutter run -d chrome
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Open browser
+open http://localhost:5173
 ```
 
-### 4. Build for Production
+### Build for Production
 
 ```bash
-# Standard build
-flutter build web
+# Build the app
+npm run build
 
-# With WebAssembly (better performance)
-flutter build web --wasm
-
-# With CanvasKit renderer (better graphics)
-flutter build web --web-renderer canvaskit
+# Preview production build
+npm run preview
 ```
 
-## 📁 Project Structure
+## 🎯 Usage
+
+### Creating a Page
+
+1. **Add Components**: Drag components from the left palette onto the canvas, or click to add
+2. **Edit Properties**: Select a component and use the properties panel on the right
+3. **Organize Layers**: Use the layers panel to manage component hierarchy
+4. **Preview**: Click the Preview button to see your page in action
+5. **Export**: Click Export to download the HTML code
+
+### Keyboard Shortcuts
+
+- `Ctrl/Cmd + Z` - Undo
+- `Ctrl/Cmd + Shift + Z` or `Ctrl/Cmd + Y` - Redo
+- `Ctrl/Cmd + S` - Save project
+- `Delete` or `Backspace` - Delete selected component
+
+### Component Types
+
+#### Layout Components
+- **Container**: A flex container for organizing other components
+- **Row**: Horizontal layout with flex-direction: row
+- **Column**: Vertical layout with flex-direction: column
+
+#### Content Components
+- **Text**: Paragraph text with customizable styles
+- **Heading**: Large heading text (H1)
+- **Button**: Interactive button with link support
+- **Image**: Responsive images with alt text
+
+#### Form Components
+- **Input**: Text input field with placeholder support
+- **Textarea**: Multi-line text area
+
+#### Section Components
+- **Card**: Card-style container with shadow
+- **Navbar**: Navigation bar layout
+- **Hero**: Hero section for landing pages
+- **Footer**: Page footer with copyright text
+
+## 🏗️ Architecture
+
+### Technology Stack
+- **Svelte 5** - Latest version with runes for reactivity
+- **SvelteKit** - Framework for building the application
+- **TypeScript** - Type-safe development
+- **Tailwind CSS** - Utility-first styling
+- **Lucide Svelte** - Beautiful icon library
+- **nanoid** - Unique ID generation
+
+### Project Structure
 
 ```
-web_builder/
+src/
 ├── lib/
-│   ├── main.dart                 # App entry point
-│   ├── models/                   # Data models
-│   │   ├── component_model.dart
-│   │   └── project_model.dart
-│   ├── providers/                # State management
-│   │   ├── builder_provider.dart
-│   │   └── ai_chat_provider.dart
-│   ├── screens/                  # Main screens
-│   │   └── builder_screen.dart
-│   ├── widgets/                  # Reusable widgets
-│   │   ├── component_palette.dart
-│   │   ├── canvas_area.dart
-│   │   ├── ai_chat_panel.dart
-│   │   ├── properties_panel.dart
-│   │   └── draggable_component.dart
-│   ├── services/                 # Services (API, storage)
-│   │   ├── ai_service.dart
-│   │   └── storage_service.dart
-│   ├── config/                   # Configuration
-│   │   └── theme.dart
-│   └── utils/                    # Utilities
-│       └── constants.dart
-├── web/                          # Web-specific files
-├── test/                         # Tests
-├── pubspec.yaml                  # Dependencies
-└── README.md                     # This file
+│   ├── components/
+│   │   ├── builder/          # Core builder components
+│   │   │   ├── Canvas.svelte
+│   │   │   ├── ComponentPalette.svelte
+│   │   │   ├── ComponentRenderer.svelte
+│   │   │   ├── PropertiesPanel.svelte
+│   │   │   ├── LayersPanel.svelte
+│   │   │   ├── Toolbar.svelte
+│   │   │   ├── ExportModal.svelte
+│   │   │   └── PreviewModal.svelte
+│   │   └── ui/               # Reusable UI components
+│   │       └── Modal.svelte
+│   ├── stores/               # Svelte 5 runes stores
+│   │   ├── canvas.svelte.ts  # Canvas state management
+│   │   └── history.svelte.ts # Undo/redo history
+│   ├── types/                # TypeScript definitions
+│   │   └── index.ts
+│   └── utils/                # Utility functions
+│       ├── export.ts         # HTML export logic
+│       └── storage.ts        # LocalStorage persistence
+├── routes/
+│   ├── +layout.svelte
+│   └── +page.svelte          # Main builder page
+└── app.css                   # Global styles
 ```
 
-## 🎨 Architecture
+### State Management
 
-### Component-Based Design
-- Every UI element is a reusable component
-- Drag-and-drop using Flutter's built-in `Draggable` and `DragTarget`
-- State management with Provider for reactive updates
+The application uses **Svelte 5 runes** for reactive state management:
 
-### AI Integration
-- Claude API for natural language processing
-- Convert user prompts to Flutter widgets
-- Smart component suggestions
-- Code generation and optimization
+- **`canvasStore`**: Manages components, selection, and canvas state
+- **`historyStore`**: Handles undo/redo functionality
 
-## 🔧 Configuration
+State is stored in `.svelte.ts` files for universal reactivity.
 
-### AI Service Setup
+## 🎨 Customization
 
-1. Get your Claude API key from [Anthropic Console](https://console.anthropic.com/)
-2. Create `lib/config/api_keys.dart`:
+### Adding New Components
 
-```dart
-class ApiKeys {
-  static const String claudeApiKey = 'YOUR_API_KEY_HERE';
+1. Add the component type to `src/lib/types/index.ts`
+2. Define default styles and props in `src/lib/stores/canvas.svelte.ts`
+3. Add rendering logic in `src/lib/components/builder/ComponentRenderer.svelte`
+4. Add to the palette in `src/lib/components/builder/ComponentPalette.svelte`
+
+### Styling
+
+Customize the theme in `tailwind.config.js`:
+
+```js
+theme: {
+  extend: {
+    colors: {
+      primary: {
+        // Your custom colors
+      },
+    },
+  },
 }
 ```
 
-3. Add to `.gitignore`:
-```
-lib/config/api_keys.dart
-```
+## 📦 Export Formats
 
-## 🌐 Web Deployment
+Currently supports:
+- **HTML** - Complete HTML file with inline styles
 
-### Deploy to Netlify
+### Future Export Options (Planned)
+- CSS file extraction
+- React components
+- Vue components
+- Svelte components
 
-```bash
-flutter build web
-# Upload build/web folder to Netlify
-```
+## 🔧 Browser Support
 
-### Deploy to Vercel
-
-```bash
-flutter build web
-# Upload build/web folder to Vercel
-```
-
-### Deploy to Firebase Hosting
-
-```bash
-flutter build web
-firebase deploy --only hosting
-```
-
-## 📝 Usage
-
-### Creating a New Project
-
-1. Click "New Project" in the header
-2. Choose a template or start blank
-3. Drag components from the palette to the canvas
-4. Customize properties in the right panel
-5. Use AI chat to make changes via natural language
-
-### Using AI Assistant
-
-```
-Examples:
-- "Add a button that says 'Get Started'"
-- "Create a hero section with a gradient background"
-- "Make this text larger and blue"
-- "Add a three-column layout"
-```
+- Chrome/Edge (latest 2 versions)
+- Firefox (latest 2 versions)
+- Safari (latest 2 versions)
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please read our contributing guidelines before submitting PRs.
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 📄 License
 
@@ -178,14 +202,19 @@ MIT License - feel free to use this for your own projects!
 
 ## 🙏 Acknowledgments
 
-- Inspired by Lovable.dev and FlutterFlow
-- Built with Flutter and Material Design 3
-- AI powered by Anthropic Claude
+Built with modern web technologies and inspired by:
+- [Builder.io](https://www.builder.io)
+- [GrapesJS](https://grapesjs.com)
+- [Webflow](https://webflow.com)
 
-## 📧 Support
+### Research Sources
 
-For questions or support, please open an issue on GitHub.
+This project was built using best practices from:
+- [Svelte 5 Runes Documentation](https://svelte.dev/docs/svelte/$state)
+- [svelte-dnd-action](https://github.com/isaacHagoel/svelte-dnd-action)
+- [Patterns.dev](https://www.patterns.dev/)
+- [Modern Web Design Patterns](https://web.dev/patterns)
 
 ---
 
-Built with ❤️ using Flutter Web
+**Built with ❤️ using Svelte 5**

@@ -62,7 +62,6 @@ build/
 .vercel/
 .netlify/
 dist/
-package-lock.json
 
 # Development
 *.log

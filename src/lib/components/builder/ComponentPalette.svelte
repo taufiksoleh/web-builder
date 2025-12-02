@@ -58,7 +58,7 @@
   let activeCategory = $state<keyof typeof categories | 'all'>('all');
   let searchQuery = $state('');
 
-  const filteredComponents = $derived(() => {
+  const filteredComponents = $derived.by(() => {
     let filtered = activeCategory === 'all'
       ? components
       : components.filter((c) => c.category === activeCategory);

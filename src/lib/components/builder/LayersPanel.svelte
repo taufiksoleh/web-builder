@@ -76,12 +76,15 @@
           {@const hasChildren = component.children.length > 0}
           {@const isExpanded = expandedIds.has(component.id)}
 
-          <button
-            class="layer-item w-full flex items-center gap-2 px-3 py-2 hover:bg-gray-100 transition-colors {isSelected
+          <div
+            class="layer-item w-full flex items-center gap-2 px-3 py-2 hover:bg-gray-100 transition-colors cursor-pointer {isSelected
               ? 'bg-primary-50 border-l-4 border-primary-600'
               : 'border-l-4 border-transparent'}"
             style="padding-left: {depth * 20 + 12}px"
             onclick={() => selectComponent(component.id)}
+            role="button"
+            tabindex="0"
+            onkeydown={(e) => e.key === 'Enter' && selectComponent(component.id)}
           >
             <!-- Expand/collapse button -->
             <div class="w-4 h-4 flex items-center justify-center flex-shrink-0">
@@ -92,6 +95,7 @@
                     e.stopPropagation();
                     toggleExpanded(component.id);
                   }}
+                  aria-label={isExpanded ? 'Collapse' : 'Expand'}
                 >
                   {#if isExpanded}
                     <ChevronDown class="w-4 h-4 text-gray-600" />
@@ -120,8 +124,12 @@
             <div class="flex items-center gap-1 flex-shrink-0">
               <button
                 class="p-1 hover:bg-gray-200 rounded transition-colors"
-                onclick={(e) => toggleVisibility(component.id, e)}
+                onclick={(e) => {
+                  e.stopPropagation();
+                  toggleVisibility(component.id, e);
+                }}
                 title={component.hidden ? 'Show' : 'Hide'}
+                aria-label={component.hidden ? 'Show' : 'Hide'}
               >
                 {#if component.hidden}
                   <EyeOff class="w-4 h-4 text-gray-500" />
@@ -132,8 +140,12 @@
 
               <button
                 class="p-1 hover:bg-gray-200 rounded transition-colors"
-                onclick={(e) => toggleLock(component.id, e)}
+                onclick={(e) => {
+                  e.stopPropagation();
+                  toggleLock(component.id, e);
+                }}
                 title={component.locked ? 'Unlock' : 'Lock'}
+                aria-label={component.locked ? 'Unlock' : 'Lock'}
               >
                 {#if component.locked}
                   <Lock class="w-4 h-4 text-gray-500" />
@@ -142,7 +154,7 @@
                 {/if}
               </button>
             </div>
-          </button>
+          </div>
         {/each}
       </div>
     {/if}

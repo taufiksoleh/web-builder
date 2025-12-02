@@ -60,6 +60,28 @@ npm run build
 npm run preview
 ```
 
+## 🚢 Deployment
+
+### GitHub Pages (Automated)
+
+This project includes a GitHub Actions workflow for automatic deployment to GitHub Pages.
+
+**Setup Steps:**
+1. Go to your GitHub repository → **Settings** → **Pages**
+2. Under **Source**, select **GitHub Actions**
+3. Update `svelte.config.js` with your repository name:
+   ```javascript
+   base: process.env.NODE_ENV === 'production' ? '/your-repo-name' : ''
+   ```
+4. Push to `main` branch - deployment happens automatically!
+
+Your site will be live at: `https://yourusername.github.io/your-repo-name`
+
+**Manual Trigger:**
+- Go to **Actions** tab → **Deploy to GitHub Pages** → **Run workflow**
+
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment guide including Vercel, Netlify, and self-hosting options.
+
 ## 🎯 Usage
 
 ### Creating a Page

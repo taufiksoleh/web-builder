@@ -54,3 +54,16 @@ lib/config/api_keys.dart
 .env
 .env.local
 .env.*.local
+
+# Node.js / Svelte / SvelteKit
+node_modules/
+.svelte-kit/
+build/
+.vercel/
+.netlify/
+dist/
+package-lock.json
+
+# Development
+*.log
+.DS_Store
